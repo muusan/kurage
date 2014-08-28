@@ -14,58 +14,56 @@ import android.widget.LinearLayout.LayoutParams;
 
 public class MainActivity extends Activity implements OnClickListener {
 
-	ImageView imageView, view;
-	ImageButton shibu;
-	// LinearLayout gosenhu;
-	LinearLayout syosetsu;
+	HorizontalScrollView scrollView;
+	LinearLayout score;
 	LinearLayout.LayoutParams params, params1;
-	HorizontalScrollView sv;
-	int width;
+	int measureWidth;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		shibu = (ImageButton) findViewById(R.id.imageButton1);
+		score = (LinearLayout) findViewById(R.id.LinearLayout8);
+		scrollView = (HorizontalScrollView) findViewById(R.id.horizontalScrollView1);
 
-		syosetsu = (LinearLayout) findViewById(R.id.LinearLayout8);
+		// layoutParamsの初期化(初期は4分)
+		onShibu(null);
+	}
 
-		// for (int i = 0; i < 5; i++) {
-		// gosenhu[i] = (LinearLayout) findViewById(R.id.LinearLayout3 + i);
-		// }
-
-		sv = (HorizontalScrollView) findViewById(R.id.horizontalScrollView1);
-
-	} 
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		measureWidth = score.getChildAt(0).getWidth();
+	}
 
 	public void onShibu(View v) {
 		// 音符の画像のパラメータを作成
 		params = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT);
 		params.weight = 4;
-		// すこーぷ
 	}
 
 	public void onOnpu(View v) {
 		// imageViewを作成
-		imageView = new ImageView(this);
+		ImageView imageView = new ImageView(this);
 		imageView.setImageResource(R.drawable.shibu);
 		imageView.setLayoutParams(params);
 		imageView.setOnClickListener(this);
 		// syosetsuに追加
-		LinearLayout gosenhu = (LinearLayout) v;
-		gosenhu.addView(imageView);
+		LinearLayout line = (LinearLayout) v;
+		line.addView(imageView);
 
-		LinearLayout issyosetsu = (LinearLayout) gosenhu.getParent();
-		for (int i = 0; i < issyosetsu.getChildCount(); i++) {
+		LinearLayout measure = (LinearLayout) line.getParent();
+		for (int i = 0; i < measure.getChildCount(); i++) {
 
 			// imageViewを作成
-			view = new ImageView(this);
+			ImageView view = new ImageView(this);
 			view.setImageResource(R.drawable.ic_launcher);
 			view.setLayoutParams(params);
 			view.setOnClickListener(this);
 			// syosetsuに追加
-			LinearLayout row = (LinearLayout) issyosetsu.getChildAt(i);
+			LinearLayout row = (LinearLayout) measure.getChildAt(i);
 
 			if (!row.equals(v)) {
 				row.addView(view);
@@ -77,17 +75,17 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		// クリックした場所(たて(column))を取得する
 		// 左から数えて何番目の位置か、を取得する
-		LinearLayout gosenhu = (LinearLayout) v.getParent();
-		int columnNumber = gosenhu.indexOfChild(v);
+		LinearLayout line = (LinearLayout) v.getParent();
+		int columnNumber = line.indexOfChild(v);
 
-		LinearLayout issyosetsu = (LinearLayout) gosenhu.getParent();
+		LinearLayout measure = (LinearLayout) line.getParent();
 
 		// すべての五線譜に対して
 		// TODO すべて => 1小節に含まれる子どもの五線譜の数
-		for (int i = 0; i < issyosetsu.getChildCount(); i++) {
+		for (int i = 0; i < measure.getChildCount(); i++) {
 
 			// たての位置のImageViewを取得
-			LinearLayout row = (LinearLayout) issyosetsu.getChildAt(i);
+			LinearLayout row = (LinearLayout) measure.getChildAt(i);
 			// すべての五線譜に対して左から数えてcolumnNumber番目の位置の
 			ImageView image = (ImageView) row.getChildAt(columnNumber);
 			// ImageViewの画像をドロイド君に変更する
@@ -102,40 +100,34 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	public void plus(View v) {
 
-		// // TODO ImageViewが含まれている1小節を、gosenhuから取得(gosenhuの親)
-		// LinearLayout issyosetsu = (LinearLayout) v.getParent();
-		// int rowNumber = issyosetsu.indexOfChild(v);
-		//
-		// 　
-		// if (rowNumber <= 5) {
-		// // TODO 1小節から、ひとつずつ五線譜を取得
-		//
-		// LinearLayout newIssyosetsu = (LinearLayout)
-		// this.issyosetsu.getChildAt(rowNumber);
-		// syosetsu.addView(newIssyosetsu);
-		// }
-
 		// 一小節のパラメータを作成
 		params1 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		// 新しい一小節をつくる
-		LinearLayout issyosetsu = new LinearLayout(this);
+		LinearLayout measure = new LinearLayout(this);
 		// いろんな設定
-		issyosetsu.setWeightSum(16); // ウェイト
-		issyosetsu.setOrientation(LinearLayout.VERTICAL); // 縦
-		issyosetsu.setBackgroundResource(R.drawable.syosetsu); // 背景
-		issyosetsu.setOnClickListener(new plusClickListener()); // onClick
-		issyosetsu.setLayoutParams(params1);
+		measure.setOrientation(LinearLayout.VERTICAL); // 縦
+		measure.setBackgroundResource(R.drawable.syosetsu); // 背景
+		measure.setLayoutParams(params1);
 		// 小節に一小節を追加する
-		syosetsu.addView(issyosetsu);
+		score.addView(measure);
 
 		// 一小節に五線譜を追加する
-		for (int i = 0; i < issyosetsu.getChildCount(); i++) {
+		for (int i = 0; i < 5; i++) {
+			System.out.println("aaa");
+
+			LayoutParams p = new LayoutParams(LayoutParams.MATCH_PARENT, 0);
+			p.weight = 1;
+
 			// 新しく五線譜を作る
-			LinearLayout gosenhu = new LinearLayout(this);
-			gosenhu.setOrientation(LinearLayout.HORIZONTAL);
-			issyosetsu.addView(gosenhu);
+			LinearLayout line = new LinearLayout(this);
+			line.setWeightSum(16);
+			line.setLayoutParams(p);
+			line.setOrientation(LinearLayout.HORIZONTAL);
+			line.setOnClickListener(new OnPlusClickListener());
+			
+			// 小節に五線譜を追加する
+			measure.addView(line);
 		}
-		width = syosetsu.getChildAt(0).getWidth();
 	}
 
 	int count = 0;
@@ -150,8 +142,8 @@ public class MainActivity extends Activity implements OnClickListener {
 			public void run() {
 				// スムーススクロールを行いつつ、countの値を増やす
 				count = count + 1;
-				sv.smoothScrollTo(count, 0);
-				if (count + width < syosetsu.getWidth()) {
+				scrollView.smoothScrollTo(count, 0);
+				if (count + measureWidth < score.getWidth()) {
 					// 10ms後にもう一回このrunメソッドを実行
 					h.postDelayed(this, 10);
 				} else {
@@ -162,28 +154,29 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	}
 
-	class plusClickListener implements OnClickListener {
+	class OnPlusClickListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
+
 			// imageViewを作成
-			imageView = new ImageView(MainActivity.this);
+			ImageView imageView = new ImageView(MainActivity.this);
 			imageView.setImageResource(R.drawable.shibu);
 			imageView.setLayoutParams(params);
 			imageView.setOnClickListener(MainActivity.this);
 
 			// syosetsuに追加
-			LinearLayout gosenhu = (LinearLayout) v;
-			gosenhu.addView(imageView);
+			LinearLayout line = (LinearLayout) v;
+			line.addView(imageView);
 
-			LinearLayout issyosetsu = (LinearLayout) gosenhu.getParent();
-			for (int i = 0; i < issyosetsu.getChildCount(); i++) {
+			LinearLayout measure = (LinearLayout) line.getParent();
+			for (int i = 0; i < measure.getChildCount(); i++) {
 				// imageViewを作成
-				view = new ImageView(MainActivity.this);
+				ImageView view = new ImageView(MainActivity.this);
 				view.setImageResource(R.drawable.ic_launcher);
 				view.setLayoutParams(params);
 				view.setOnClickListener(MainActivity.this);
 				// syosetsuに追加
-				LinearLayout row = (LinearLayout) issyosetsu.getChildAt(i);
+				LinearLayout row = (LinearLayout) measure.getChildAt(i);
 				if (!row.equals(v)) {
 					row.addView(view);
 				}
