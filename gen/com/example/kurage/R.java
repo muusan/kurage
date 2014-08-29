@@ -21,26 +21,32 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int play=0x7f020001;
-        public static final int plus=0x7f020002;
-        public static final int shibu=0x7f020003;
-        public static final int syosetsu=0x7f020004;
+        public static final int hatibu=0x7f020000;
+        public static final int hatibu_check=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int kara=0x7f020003;
+        public static final int play=0x7f020004;
+        public static final int plus=0x7f020005;
+        public static final int sen=0x7f020006;
+        public static final int shibu=0x7f020007;
+        public static final int shibu_check=0x7f020008;
+        public static final int syosetsu=0x7f020009;
     }
     public static final class id {
         public static final int LinearLayout1=0x7f080000;
-        public static final int LinearLayout2=0x7f080006;
-        public static final int LinearLayout3=0x7f080007;
-        public static final int LinearLayout4=0x7f080008;
-        public static final int LinearLayout5=0x7f080009;
-        public static final int LinearLayout6=0x7f08000a;
-        public static final int LinearLayout7=0x7f08000b;
-        public static final int LinearLayout8=0x7f080005;
-        public static final int action_settings=0x7f08000c;
-        public static final int horizontalScrollView1=0x7f080004;
+        public static final int LinearLayout2=0x7f080007;
+        public static final int LinearLayout3=0x7f080008;
+        public static final int LinearLayout4=0x7f080009;
+        public static final int LinearLayout5=0x7f08000a;
+        public static final int LinearLayout6=0x7f08000b;
+        public static final int LinearLayout7=0x7f08000c;
+        public static final int LinearLayout8=0x7f080006;
+        public static final int action_settings=0x7f08000d;
+        public static final int horizontalScrollView1=0x7f080005;
         public static final int imageButton1=0x7f080001;
-        public static final int imageButton2=0x7f080002;
-        public static final int imageButton3=0x7f080003;
+        public static final int imageButton2=0x7f080003;
+        public static final int imageButton3=0x7f080004;
+        public static final int imageButton4=0x7f080002;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

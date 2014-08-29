@@ -18,6 +18,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	LinearLayout score;
 	LinearLayout.LayoutParams params, params1;
 	int measureWidth;
+	ImageButton shibu, hatibu;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,22 +27,34 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		score = (LinearLayout) findViewById(R.id.LinearLayout8);
 		scrollView = (HorizontalScrollView) findViewById(R.id.horizontalScrollView1);
-
-		// layoutParamsの初期化(初期は4分)
-		onShibu(null);
+		shibu = (ImageButton) findViewById(R.id.imageButton1);
+		hatibu = (ImageButton) findViewById(R.id.imageButton4);
+		//
+		// // layoutParamsの初期化(初期は4分)
+		// onShibu(null);
 	}
 
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		measureWidth = score.getChildAt(0).getWidth();
+		// measureWidth = score.getChildAt(0).getWidth();
 	}
 
 	public void onShibu(View v) {
 		// 音符の画像のパラメータを作成
 		params = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT);
 		params.weight = 4;
+		shibu.setImageResource(R.drawable.shibu_check);
+		hatibu.setImageResource(R.drawable.hatibu);
+	}
+
+	public void onHatibu(View v) {
+		// 音符の画像のパラメータを作成
+		params = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT);
+		params.weight = 2;
+		shibu.setImageResource(R.drawable.shibu);
+		hatibu.setImageResource(R.drawable.hatibu_check);
 	}
 
 	public void onOnpu(View v) {
@@ -59,7 +72,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 			// imageViewを作成
 			ImageView view = new ImageView(this);
-			view.setImageResource(R.drawable.ic_launcher);
+			view.setImageResource(R.drawable.kara);
 			view.setLayoutParams(params);
 			view.setOnClickListener(this);
 			// syosetsuに追加
@@ -88,8 +101,8 @@ public class MainActivity extends Activity implements OnClickListener {
 			LinearLayout row = (LinearLayout) measure.getChildAt(i);
 			// すべての五線譜に対して左から数えてcolumnNumber番目の位置の
 			ImageView image = (ImageView) row.getChildAt(columnNumber);
-			// ImageViewの画像をドロイド君に変更する
-			image.setImageResource(R.drawable.ic_launcher);
+			// // ImageViewの画像をドロイド君に変更する
+			image.setImageResource(R.drawable.kara);
 		}
 
 		// Viewとしてとってきたvを、ImageViewに型変更する
@@ -106,7 +119,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		LinearLayout measure = new LinearLayout(this);
 		// いろんな設定
 		measure.setOrientation(LinearLayout.VERTICAL); // 縦
-		measure.setBackgroundResource(R.drawable.syosetsu); // 背景
 		measure.setLayoutParams(params1);
 		// 小節に一小節を追加する
 		score.addView(measure);
@@ -123,8 +135,9 @@ public class MainActivity extends Activity implements OnClickListener {
 			line.setWeightSum(16);
 			line.setLayoutParams(p);
 			line.setOrientation(LinearLayout.HORIZONTAL);
+			line.setBackgroundResource(R.drawable.sen); // 背景
 			line.setOnClickListener(new OnPlusClickListener());
-			
+
 			// 小節に五線譜を追加する
 			measure.addView(line);
 		}
@@ -133,6 +146,9 @@ public class MainActivity extends Activity implements OnClickListener {
 	int count = 0;
 
 	public void play(View v) {
+		measureWidth = score.getChildAt(0).getWidth();
+		System.out.println("measureWidth: " + measureWidth);
+
 		// ハンドラー
 		final Handler h = new Handler();
 		// ハンドラーを実行(Runnableのrunメソッドを実行する)
@@ -142,8 +158,11 @@ public class MainActivity extends Activity implements OnClickListener {
 			public void run() {
 				// スムーススクロールを行いつつ、countの値を増やす
 				count = count + 1;
-				scrollView.smoothScrollTo(count, 0);
-				if (count + measureWidth < score.getWidth()) {
+				// scrollView.smoothScrollTo(count, 0);
+
+				System.out.println("scrollX: " + scrollView.getScrollX());
+				scrollView.scrollBy(1, 0);
+				if (count + measureWidth + measureWidth / 2 < score.getWidth()) {
 					// 10ms後にもう一回このrunメソッドを実行
 					h.postDelayed(this, 10);
 				} else {
@@ -172,7 +191,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			for (int i = 0; i < measure.getChildCount(); i++) {
 				// imageViewを作成
 				ImageView view = new ImageView(MainActivity.this);
-				view.setImageResource(R.drawable.ic_launcher);
+				view.setImageResource(R.drawable.kara);
 				view.setLayoutParams(params);
 				view.setOnClickListener(MainActivity.this);
 				// syosetsuに追加
