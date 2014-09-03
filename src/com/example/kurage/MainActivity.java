@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 
@@ -29,9 +30,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		scrollView = (HorizontalScrollView) findViewById(R.id.horizontalScrollView1);
 		shibu = (ImageButton) findViewById(R.id.imageButton1);
 		hatibu = (ImageButton) findViewById(R.id.imageButton4);
-		//
-		// // layoutParamsの初期化(初期は4分)
-		// onShibu(null);
+		// 音符の画像のパラメータを作成
+		params = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT);
+		params.weight = 0;
+
 	}
 
 	@Override
@@ -42,44 +44,55 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	public void onShibu(View v) {
-		// 音符の画像のパラメータを作成
-		params = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT);
+		// 音符の画像のパラメータをセット
+		params = new LayoutParams(params);
 		params.weight = 4;
 		shibu.setImageResource(R.drawable.shibu_check);
 		hatibu.setImageResource(R.drawable.hatibu);
 	}
 
 	public void onHatibu(View v) {
-		// 音符の画像のパラメータを作成
-		params = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT);
+		params = new LayoutParams(params);
 		params.weight = 2;
 		shibu.setImageResource(R.drawable.shibu);
 		hatibu.setImageResource(R.drawable.hatibu_check);
 	}
 
 	public void onOnpu(View v) {
-		// imageViewを作成
-		ImageView imageView = new ImageView(this);
-		imageView.setImageResource(R.drawable.shibu);
-		imageView.setLayoutParams(params);
-		imageView.setOnClickListener(this);
-		// syosetsuに追加
-		LinearLayout line = (LinearLayout) v;
-		line.addView(imageView);
-
-		LinearLayout measure = (LinearLayout) line.getParent();
-		for (int i = 0; i < measure.getChildCount(); i++) {
+		if (params.weight == 0) {// 音符を選択していないとき
+			Toast.makeText(this, "音符を選択してください", Toast.LENGTH_SHORT).show();
+		} else {// 音符を選択しているとき
 
 			// imageViewを作成
-			ImageView view = new ImageView(this);
-			view.setImageResource(R.drawable.kara);
-			view.setLayoutParams(params);
-			view.setOnClickListener(this);
-			// syosetsuに追加
-			LinearLayout row = (LinearLayout) measure.getChildAt(i);
+			ImageView imageView = new ImageView(this);
 
-			if (!row.equals(v)) {
-				row.addView(view);
+			if (params.weight == 4) {// 四分音符が選択されているとき
+				imageView.setImageResource(R.drawable.shibu);
+			} else if (params.weight == 2) {// 八分音符が選択されているとき
+				imageView.setImageResource(R.drawable.hatibu);
+			}
+
+			imageView.setLayoutParams(params);
+			imageView.setOnClickListener(this);
+			// syosetsuに追加
+			LinearLayout line = (LinearLayout) v;
+			line.addView(imageView);
+
+			// 五線譜のラインの親（つまり小節）をもってくる
+			LinearLayout measure = (LinearLayout) line.getParent();
+			for (int i = 0; i < measure.getChildCount(); i++) {
+
+				// 空のimageViewを作成
+				ImageView view = new ImageView(this);
+				view.setImageResource(R.drawable.kara);
+				view.setLayoutParams(params);
+				view.setOnClickListener(this);
+				// 横の五線譜のなかに追加
+				LinearLayout row = (LinearLayout) measure.getChildAt(i);
+
+				if (!row.equals(v)) {
+					row.addView(view);
+				}
 			}
 		}
 	}
@@ -107,8 +120,12 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		// Viewとしてとってきたvを、ImageViewに型変更する
 		ImageView image = (ImageView) v;
-		// クリックした場所のドロイド君の画像をを音符の画像にする
-		image.setImageResource(R.drawable.shibu);
+		// クリックした場所の空の画像を音符の画像にする
+		if (params.weight == 4) {// 四分音符が選択されているとき
+			image.setImageResource(R.drawable.shibu);
+		} else if (params.weight == 2) {// 八分音符が選択されているとき
+			image.setImageResource(R.drawable.hatibu);
+		}
 	}
 
 	public void plus(View v) {
@@ -157,16 +174,11 @@ public class MainActivity extends Activity implements OnClickListener {
 			@Override
 			public void run() {
 				// スムーススクロールを行いつつ、countの値を増やす
-				count = count + 1;
-				// scrollView.smoothScrollTo(count, 0);
-
+				scrollView.smoothScrollBy(1, 0);
 				System.out.println("scrollX: " + scrollView.getScrollX());
-				scrollView.scrollBy(1, 0);
-				if (count + measureWidth + measureWidth / 2 < score.getWidth()) {
+				if (scrollView.getScrollX() < score.getWidth() - scrollView.getWidth()) {
 					// 10ms後にもう一回このrunメソッドを実行
-					h.postDelayed(this, 10);
-				} else {
-					count = 0;
+					h.postDelayed(this, 5);
 				}
 			}
 		});
@@ -179,7 +191,13 @@ public class MainActivity extends Activity implements OnClickListener {
 
 			// imageViewを作成
 			ImageView imageView = new ImageView(MainActivity.this);
-			imageView.setImageResource(R.drawable.shibu);
+
+			if (params.weight == 4) {// 四分音符が選択されているとき
+				imageView.setImageResource(R.drawable.shibu);
+			} else if (params.weight == 2) {// 八分音符が選択されているとき
+				imageView.setImageResource(R.drawable.hatibu);
+			}
+
 			imageView.setLayoutParams(params);
 			imageView.setOnClickListener(MainActivity.this);
 
