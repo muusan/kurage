@@ -36,7 +36,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		shibu = (ImageButton) findViewById(R.id.imageButton1);
 		hatibu = (ImageButton) findViewById(R.id.imageButton4);
 		// 音符の画像のパラメータを作成
-		params = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT);
+		params = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT);
 		params.weight = 0;
 
 		// 音鳴らす用のクラスのインスタンス生成(1つめの引数はおまじない(contextっていうものだけど、今は気にしない),
@@ -151,18 +151,39 @@ public class MainActivity extends Activity implements OnClickListener {
 		if (params.weight == 4) {// 四分音符が選択されているとき
 
 			if (p.weight == 2) {// 押した音符が八分音符のとき
-				// if(/*押した音符の次の音符が八分音符のとき*/){
-				// // 押した音符の次の音符を削除
-				// line.removeViewAt(columnNumber + 1);
-				// }if(/*押した音符の次の音符が四分音符のとき*/){
-				// //押した音符の次の音符を八分音符にする
-				//
-				// // // 押した音符の画像を変更する
-				// // image.setImageResource(R.drawable.hatibu);
-				// // //押した音符のパラメータ(長さ)を八分音符の長さにする
-				// // params.weight = 2;
-				//
-				// }
+				// 押した音符の次の音符をnext(Imageview型)と名付ける〜〜。
+				ImageView next = (ImageView) line.getChildAt(columnNumber + 1);
+				// クリックした場所の次の音符のパラメータを呼んでおく
+				LayoutParams a = (LinearLayout.LayoutParams) next.getLayoutParams();
+
+				if (a.weight == 2/* 押した音符の次の音符が八分音符のとき */) {
+
+					// 一小節に入ってるline(measureの子ども)の数の分だけ繰り返す(すべての五線譜に対して)
+					for (int i = 0; i < measure.getChildCount(); i++) {
+						// 左から数えてcolumnNumber+1番目の位置の(押した音符の次の)音符を削除
+						LinearLayout row = (LinearLayout) measure.getChildAt(i);
+						row.removeViewAt(columnNumber + 1);
+						// columnNumber+1番目の位置の(押した音符の次の)音を削除
+						onpuArray.remove(columnNumber + 1);
+
+						// 四分音符分の長さの音を押した音符の位置に入れる( 'ω')
+						onpu shibu = new onpu(4, SoundPlayer.NOTE, "C");
+						onpuArray.add(columnNumber, shibu);
+						p.weight = 4;
+
+					}
+				}
+				if (a.weight == 4/* 押した音符の次の音符が四分音符のとき */) {
+					// 押した音符の画像を変更する
+					image.setImageResource(R.drawable.shibu);
+					p.weight = 4;
+
+					// 押した音符の次の音符を八分音符にする
+					next.setImageResource(R.drawable.hatibu);
+					a.weight = 2;
+					// next.setLayoutParams(a);
+
+				}
 
 			}
 
