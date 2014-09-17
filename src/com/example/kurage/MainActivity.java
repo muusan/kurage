@@ -1,5 +1,7 @@
 package com.example.kurage;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,9 +22,10 @@ public class MainActivity extends Activity implements OnClickListener {
 	LinearLayout.LayoutParams params, params1;
 	int measureWidth;
 	ImageButton shibu, hatibu;
+	ArrayList<onpu> onpuArray = new ArrayList<onpu>();
+	SoundPlayer sp;
 
 	// score　譜面,　measure 一小節,　line　五線譜
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,6 +38,10 @@ public class MainActivity extends Activity implements OnClickListener {
 		// 音符の画像のパラメータを作成
 		params = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT);
 		params.weight = 0;
+
+		// 音鳴らす用のクラスのインスタンス生成(1つめの引数はおまじない(contextっていうものだけど、今は気にしない),
+		// 2つめの引数がbpm, 3つめの引数が音源ファイル)
+		sp = new SoundPlayer(getApplicationContext(), 120, R.raw.nibu);
 
 	}
 
@@ -52,6 +59,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		params.weight = 4;
 		shibu.setImageResource(R.drawable.shibu_check);
 		hatibu.setImageResource(R.drawable.hatibu);
+
 	}
 
 	// 八分音符を押したときの処理
@@ -72,17 +80,23 @@ public class MainActivity extends Activity implements OnClickListener {
 			ImageView imageView = new ImageView(this);
 			if (params.weight == 4) {// 四分音符が選択されているとき
 				imageView.setImageResource(R.drawable.shibu);
+				onpu shibu = new onpu(4, SoundPlayer.NOTE, "C");
+				onpuArray.add(shibu);
 			} else if (params.weight == 2) {// 八分音符が選択されているとき
 				imageView.setImageResource(R.drawable.hatibu);
+				onpu hatibu = new onpu(8, SoundPlayer.NOTE, "C");
+				onpuArray.add(hatibu);
 			}
 			// パラメータをセットする
 			imageView.setLayoutParams(params);
 			// onClickListenerをセットする
 			imageView.setOnClickListener(this);
+
 			// viewとしてとってきたvをLinearLayout型に変更する
 			LinearLayout line = (LinearLayout) v;
 			// line(五線譜の一線)に追加
 			line.addView(imageView);
+			//
 
 			// 五線譜のラインの親（つまり小節）をもってくる
 			LinearLayout measure = (LinearLayout) line.getParent();
@@ -102,9 +116,11 @@ public class MainActivity extends Activity implements OnClickListener {
 					row.addView(view);
 				}
 			}
+
 		}
 	}
 
+	// scoreにある音符をタップしたとき
 	@Override
 	public void onClick(View v) {
 		// クリックした場所(たて(column))を取得する
@@ -135,14 +151,19 @@ public class MainActivity extends Activity implements OnClickListener {
 		if (params.weight == 4) {// 四分音符が選択されているとき
 
 			if (p.weight == 2) {// 押した音符が八分音符のとき
-				// ImageView imageView = (ImageView)
-				// line.getChildAt(columnNumber +
-				// 1);
-				// imageView.setImageResource(R.drawable.hatibu);
-				// params = new LayoutParams(params);
-				// params.weight = 2;
-				// imageView.setLayoutParams(params);
-				// line.addView(imageView, columnNumber + 2);
+				// if(/*押した音符の次の音符が八分音符のとき*/){
+				// // 押した音符の次の音符を削除
+				// line.removeViewAt(columnNumber + 1);
+				// }if(/*押した音符の次の音符が四分音符のとき*/){
+				// //押した音符の次の音符を八分音符にする
+				//
+				// // // 押した音符の画像を変更する
+				// // image.setImageResource(R.drawable.hatibu);
+				// // //押した音符のパラメータ(長さ)を八分音符の長さにする
+				// // params.weight = 2;
+				//
+				// }
+
 			}
 
 			image.setImageResource(R.drawable.shibu);
@@ -151,7 +172,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		} else if (params.weight == 2) {// 八分音符が選択されているとき
 
 			if (p.weight == 4) {// 押した音符が四分音符のとき
-				// 八分休符をつくる
+				// 新しく八分休符をつくる
 				ImageView imageView = new ImageView(this);
 				imageView.setImageResource(R.drawable.kyuhu_hatibu);
 				params = new LayoutParams(params);
@@ -160,8 +181,9 @@ public class MainActivity extends Activity implements OnClickListener {
 				// 押したlineの五線譜にcolumnumber+1番目の位置(八分音符の右隣)に休符を追加する
 				line.addView(imageView, columnNumber + 1);
 			}
-			// 押した音符の画像を
+			// 押した音符の画像を変更する
 			image.setImageResource(R.drawable.hatibu);
+			// 押した音符のパラメータ(長さ)を八分音符の長さにする
 			params.weight = 2;
 
 		}
@@ -182,7 +204,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		// 一小節に五線譜を追加する
 		for (int i = 0; i < 5; i++) {
-			System.out.println("aaa");
+			// System.out.println("aaa");
 
 			LayoutParams p = new LayoutParams(LayoutParams.MATCH_PARENT, 0);
 			p.weight = 1;
@@ -204,7 +226,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	public void play(View v) {
 		measureWidth = score.getChildAt(0).getWidth();
-		System.out.println("measureWidth: " + measureWidth);
+		// System.out.println("measureWidth: " + measureWidth);
 
 		// ハンドラー
 		final Handler h = new Handler();
@@ -215,13 +237,23 @@ public class MainActivity extends Activity implements OnClickListener {
 			public void run() {
 				// スムーススクロールを行いつつ、countの値を増やす
 				scrollView.smoothScrollBy(1, 0);
-				System.out.println("scrollX: " + scrollView.getScrollX());
+				// System.out.println("scrollX: " + scrollView.getScrollX());
 				if (scrollView.getScrollX() < score.getWidth() - scrollView.getWidth()) {
 					// 10ms後にもう一回このrunメソッドを実行
 					h.postDelayed(this, 5);
 				}
 			}
 		});
+		// 音の再生
+		sp.play();// 再生開始
+
+		// 音符あれいにはいってる音符の情報(typeとlength)を一つずつ読み込む
+		for (int i = 0; i < onpuArray.size(); i++) {
+			onpu oto = onpuArray.get(i);
+			sp.write(oto.type, oto.length);
+		}
+
+		sp.stop(); // 再生終了
 
 	}
 
@@ -234,15 +266,22 @@ public class MainActivity extends Activity implements OnClickListener {
 
 			if (params.weight == 4) {// 四分音符が選択されているとき
 				imageView.setImageResource(R.drawable.shibu);
+				onpu shibu = new onpu(4, SoundPlayer.NOTE, "C");
+				onpuArray.add(shibu);
 			} else if (params.weight == 2) {// 八分音符が選択されているとき
 				imageView.setImageResource(R.drawable.hatibu);
+				onpu hatibu = new onpu(8, SoundPlayer.NOTE, "C");
+				onpuArray.add(hatibu);
 			}
 
+			// パラメータをセットする
 			imageView.setLayoutParams(params);
+			// onClickListenerをセットする
 			imageView.setOnClickListener(MainActivity.this);
 
-			// syosetsuに追加
+			// viewとしてとってきたvをLinearLayout型に変更する
 			LinearLayout line = (LinearLayout) v;
+			// line(五線譜の一線)に追加
 			line.addView(imageView);
 
 			LinearLayout measure = (LinearLayout) line.getParent();
