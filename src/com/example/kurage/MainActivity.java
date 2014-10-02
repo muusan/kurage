@@ -24,6 +24,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	ImageButton shibu, hatibu;
 	ArrayList<onpu> onpuArray = new ArrayList<onpu>();
 	SoundPlayer sp;
+	NoteType selectNoteType;
 
 	// score　譜面,　measure 一小節,　line　五線譜
 	@Override
@@ -43,6 +44,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		// 2つめの引数がbpm, 3つめの引数が音源ファイル)
 		sp = new SoundPlayer(getApplicationContext(), 120, R.raw.nibu);
 
+		// 音符の初期設定(8分音符)
+		selectNoteType = NoteType.EIGHTH;
 	}
 
 	@Override
@@ -54,41 +57,52 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	// 四分音符ボタンを押したときの処理
 	public void onShibu(View v) {
-		// 音符の画像のパラメータをセット
-		params = new LayoutParams(params);
-		params.weight = 4;
+		// // 音符の画像のパラメータをセット
+		// params = new LayoutParams(params);
+		// params.weight = 4;
 		shibu.setImageResource(R.drawable.shibu_check);
 		hatibu.setImageResource(R.drawable.hatibu);
 
+		selectNoteType = NoteType.QUARTER;
 	}
 
 	// 八分音符を押したときの処理
 	public void onHatibu(View v) {
-		params = new LayoutParams(params);
-		params.weight = 2;
+		// // 音符の画像のパラメータをセット
+		// params = new LayoutParams(params);
+		// params.weight = 2;
 		shibu.setImageResource(R.drawable.shibu);
 		hatibu.setImageResource(R.drawable.hatibu_check);
+
+		selectNoteType = NoteType.EIGHTH;
 	}
 
 	// scoreを押したときの処理
 	public void onOnpu(View v) {
-		if (params.weight == 0) {// 音符を選択していないとき
+		if (selectNoteType.getWeight() == 0
+		/* params.weight == 0 */) {// 音符を選択していないとき
 			Toast.makeText(this, "音符を選択してください", Toast.LENGTH_SHORT).show();
 		} else {// 音符を選択しているとき
 
 			// imageViewを作成
 			ImageView imageView = new ImageView(this);
-			if (params.weight == 4) {// 四分音符が選択されているとき
-				imageView.setImageResource(R.drawable.shibu);
-				onpu shibu = new onpu(4, SoundPlayer.NOTE, "C");
-				onpuArray.add(shibu);
-			} else if (params.weight == 2) {// 八分音符が選択されているとき
-				imageView.setImageResource(R.drawable.hatibu);
-				onpu hatibu = new onpu(8, SoundPlayer.NOTE, "C");
-				onpuArray.add(hatibu);
-			}
-			// パラメータをセットする
+			imageView.setImageResource(selectNoteType.getResourceId());
+
+			LayoutParams params = new LayoutParams(0, LayoutParams.MATCH_PARENT);
+			params.weight = selectNoteType.getWeight();
 			imageView.setLayoutParams(params);
+
+			// if (params.weight == 4) {// 四分音符が選択されているとき
+			// imageView.setImageResource(R.drawable.shibu);
+			// onpu shibu = new onpu(4, SoundPlayer.NOTE, "C");
+			// onpuArray.add(shibu);
+			// } else if (params.weight == 2) {// 八分音符が選択されているとき
+			// imageView.setImageResource(R.drawable.hatibu);
+			// onpu hatibu = new onpu(8, SoundPlayer.NOTE, "C");
+			// onpuArray.add(hatibu);
+			// }
+			// // パラメータをセットする
+			// imageView.setLayoutParams(params);
 			// onClickListenerをセットする
 			imageView.setOnClickListener(this);
 
