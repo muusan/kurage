@@ -147,67 +147,85 @@ public class MainActivity extends Activity implements OnClickListener {
 		ImageView image = (ImageView) v;
 		// クリックした場所の音符のパラメータを呼んでおく
 		LayoutParams p = (LinearLayout.LayoutParams) image.getLayoutParams();
+
 		// クリックした場所の空の画像を音符の画像にする
-		if (params.weight == 4) {// 四分音符が選択されているとき
+		if (params.weight < p.weight) {
+			// 選択した音符.weight < 押した音符.weight　のとき
 
-			if (p.weight == 2) {// 押した音符が八分音符のとき
-				// 押した音符の次の音符をnext(Imageview型)と名付ける〜〜。
-				ImageView next = (ImageView) line.getChildAt(columnNumber + 1);
-				// クリックした場所の次の音符のパラメータを呼んでおく
-				LayoutParams a = (LinearLayout.LayoutParams) next.getLayoutParams();
-
-				if (a.weight == 2/* 押した音符の次の音符が八分音符のとき */) {
-
-					// 一小節に入ってるline(measureの子ども)の数の分だけ繰り返す(すべての五線譜に対して)
-					for (int i = 0; i < measure.getChildCount(); i++) {
-						// 左から数えてcolumnNumber+1番目の位置の(押した音符の次の)音符を削除
-						LinearLayout row = (LinearLayout) measure.getChildAt(i);
-						row.removeViewAt(columnNumber + 1);
-						// columnNumber+1番目の位置の(押した音符の次の)音を削除
-						onpuArray.remove(columnNumber + 1);
-
-						// 四分音符分の長さの音を押した音符の位置に入れる( 'ω')
-						onpu shibu = new onpu(4, SoundPlayer.NOTE, "C");
-						onpuArray.add(columnNumber, shibu);
-						p.weight = 4;
-
-					}
-				}
-				if (a.weight == 4/* 押した音符の次の音符が四分音符のとき */) {
-					// 押した音符の画像を変更する
-					image.setImageResource(R.drawable.shibu);
-					p.weight = 4;
-
-					// 押した音符の次の音符を八分音符にする
-					next.setImageResource(R.drawable.hatibu);
-					a.weight = 2;
-					// next.setLayoutParams(a);
-
-				}
-
-			}
-
-			image.setImageResource(R.drawable.shibu);
-			params.weight = 4;
-
-		} else if (params.weight == 2) {// 八分音符が選択されているとき
-
-			if (p.weight == 4) {// 押した音符が四分音符のとき
-				// 新しく八分休符をつくる
-				ImageView imageView = new ImageView(this);
-				imageView.setImageResource(R.drawable.kyuhu_hatibu);
-				params = new LayoutParams(params);
-				params.weight = 2;
-				imageView.setLayoutParams(params);
-				// 押したlineの五線譜にcolumnumber+1番目の位置(八分音符の右隣)に休符を追加する
-				line.addView(imageView, columnNumber + 1);
-			}
-			// 押した音符の画像を変更する
 			image.setImageResource(R.drawable.hatibu);
-			// 押した音符のパラメータ(長さ)を八分音符の長さにする
-			params.weight = 2;
+			LayoutParams hatibu = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT);
+			hatibu.weight = 2;
+			image.setLayoutParams(hatibu);
 
+			for (int i = 0; i < params.weight / p.weight; i++) {
+				ImageView newImage = new ImageView(this);
+				newImage.setImageResource(R.drawable.kyuhu_hatibu);
+				newImage.setLayoutParams(hatibu);
+				line.addView(newImage, columnNumber + 1);
+
+			}
 		}
+
+		// if (params.weight == 4) {// 四分音符が選択されているとき
+		//
+		// if (p.weight == 2) {// 押した音符が八分音符のとき
+		// // 押した音符の次の音符をnext(Imageview型)と名付ける〜〜。
+		// ImageView next = (ImageView) line.getChildAt(columnNumber + 1);
+		// // クリックした場所の次の音符のパラメータを呼んでおく
+		// LayoutParams a = (LinearLayout.LayoutParams) next.getLayoutParams();
+		//
+		// if (a.weight == 2/* 押した音符の次の音符が八分音符のとき */) {
+		//
+		// // 一小節に入ってるline(measureの子ども)の数の分だけ繰り返す(すべての五線譜に対して)
+		// for (int i = 0; i < measure.getChildCount(); i++) {
+		// // 左から数えてcolumnNumber+1番目の位置の(押した音符の次の)音符を削除
+		// LinearLayout row = (LinearLayout) measure.getChildAt(i);
+		// row.removeViewAt(columnNumber + 1);
+		// // columnNumber+1番目の位置の(押した音符の次の)音を削除
+		// onpuArray.remove(columnNumber + 1);
+		//
+		// // 四分音符分の長さの音を押した音符の位置に入れる( 'ω')
+		// onpu shibu = new onpu(4, SoundPlayer.NOTE, "C");
+		// onpuArray.add(columnNumber, shibu);
+		// p.weight = 4;
+		//
+		// }
+		// }
+		// if (a.weight == 4/* 押した音符の次の音符が四分音符のとき */) {
+		// // 押した音符の画像を変更する
+		// image.setImageResource(R.drawable.shibu);
+		// p.weight = 4;
+		//
+		// // 押した音符の次の音符を八分音符にする
+		// next.setImageResource(R.drawable.hatibu);
+		// a.weight = 2;
+		// // next.setLayoutParams(a);
+		//
+		// }
+		//
+		// }
+		//
+		// image.setImageResource(R.drawable.shibu);
+		// params.weight = 4;
+		//
+		// } else if (params.weight == 2) {// 八分音符が選択されているとき
+		//
+		// if (p.weight == 4) {// 押した音符が四分音符のとき
+		// // 新しく八分休符をつくる
+		// ImageView imageView = new ImageView(this);
+		// imageView.setImageResource(R.drawable.kyuhu_hatibu);
+		// params = new LayoutParams(params);
+		// params.weight = 2;
+		// imageView.setLayoutParams(params);
+		// // 押したlineの五線譜にcolumnumber+1番目の位置(八分音符の右隣)に休符を追加する
+		// line.addView(imageView, columnNumber + 1);
+		// }
+		// // 押した音符の画像を変更する
+		// image.setImageResource(R.drawable.hatibu);
+		// // 押した音符のパラメータ(長さ)を八分音符の長さにする
+		// params.weight = 2;
+		//
+		// }
 
 	}
 
