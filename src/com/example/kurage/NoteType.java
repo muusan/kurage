@@ -31,6 +31,7 @@ public enum NoteType {
 		this.typeString = typeString;
 	}
 
+	// 小数をつかうかもだからint型じゃなくてfloat型。
 	abstract float getWeight();
 
 	abstract int getResourceId();
