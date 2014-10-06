@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/relativeLayout" >
+    
+    <Button
+            android:id="@+id/menu"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="15dp"
+            android:text="MENU"
+            android:onClick="onMenu" />
+
+    <Button
+        android:id="@+id/play"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/menu"
+        android:layout_toLeftOf="@+id/menu"
+        android:text="再生" />
+    
+    <Button
+        android:id="@+id/set"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/menu"
+        android:layout_toLeftOf="@+id/play"
+        android:text="設定" />
+
+    <Button
+        android:id="@+id/note"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/menu"
+        android:layout_alignRight="@+id/menu"
+        android:text="音符" />
+    <Button
+        android:id="@+id/half"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/note"
+        android:layout_toLeftOf="@+id/note"
+        android:text="二分音符" />
+    
+    <Button
+        android:id="@+id/quarter"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/note"
+        android:layout_toLeftOf="@+id/half"
+        android:text="四分音符" />
+    <Button
+        android:id="@+id/eighth"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/note"
+        android:layout_toLeftOf="@+id/quarter"
+        android:text="八分音符" />
+
+    <Button
+        android:id="@+id/rest"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/note"
+        android:layout_alignRight="@+id/menu"
+        android:text="休符" />
+    <Button
+        android:id="@+id/half_rest"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/rest"
+        android:layout_toLeftOf="@+id/rest"
+        android:text="二分休符" />
+    
+    <Button
+        android:id="@+id/quarter_rest"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/rest"
+        android:layout_toLeftOf="@+id/half_rest"
+        android:text="四分休符" />
+    <Button
+        android:id="@+id/eighth_rest"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/rest"
+        android:layout_toLeftOf="@+id/quarter_rest"
+        android:text="八分休符" />
+
+</RelativeLayout>
