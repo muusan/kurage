@@ -14,6 +14,7 @@
             android:layout_marginBottom="15dp"
             android:layout_marginRight="15dp"
             android:text="MENU"
+            android:background="@drawable/button_design"
             android:onClick="onMenu" />
 
     <Button
@@ -22,6 +23,7 @@
         android:layout_height="60dp"
         android:layout_alignTop="@+id/menu"
         android:layout_toLeftOf="@+id/menu"
+        android:background="@drawable/button_design"
         android:text="再生" />
     
     <Button
@@ -30,6 +32,7 @@
         android:layout_height="60dp"
         android:layout_alignTop="@+id/menu"
         android:layout_toLeftOf="@+id/play"
+        android:background="@drawable/button_design"
         android:text="設定" />
 
     <Button
@@ -38,13 +41,26 @@
         android:layout_height="60dp"
         android:layout_above="@+id/menu"
         android:layout_alignRight="@+id/menu"
-        android:text="音符" />
+        android:background="@drawable/button_design"
+        android:text="音符" 
+        android:onClick="onNote"/>
+    <Button
+        android:id="@+id/whole"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/note"
+        android:layout_toLeftOf="@+id/note"
+        android:background="@drawable/button_design"
+        android:onClick="onZen"
+        android:text="全音符" />
     <Button
         android:id="@+id/half"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignTop="@+id/note"
-        android:layout_toLeftOf="@+id/note"
+        android:layout_toLeftOf="@+id/whole"
+        android:background="@drawable/button_design"
+        android:onClick="onNibu"
         android:text="二分音符" />
     
     <Button
@@ -53,6 +69,8 @@
         android:layout_height="60dp"
         android:layout_alignTop="@+id/note"
         android:layout_toLeftOf="@+id/half"
+        android:background="@drawable/button_design"
+        android:onClick="onShibu"
         android:text="四分音符" />
     <Button
         android:id="@+id/eighth"
@@ -60,21 +78,50 @@
         android:layout_height="60dp"
         android:layout_alignTop="@+id/note"
         android:layout_toLeftOf="@+id/quarter"
+        android:background="@drawable/button_design"
+        android:onClick="onHatibu"
         android:text="八分音符" />
+    
+    <Button
+        android:id="@+id/sixteenth"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/note"
+        android:layout_toLeftOf="@+id/eighth"
+        android:background="@drawable/button_design"
+        android:onClick="onJurokubu"
+        android:text="一六分音符" />
 
+    
     <Button
         android:id="@+id/rest"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_above="@+id/note"
         android:layout_alignRight="@+id/menu"
-        android:text="休符" />
+        android:background="@drawable/button_design"
+        android:onClick="onRest"
+        android:text="休符"
+         />
+    <Button
+        android:id="@+id/whole_rest"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/rest"
+        android:layout_toLeftOf="@+id/rest"
+        android:background="@drawable/button_design"
+        android:onClick="onZenRest"
+        android:text="全休符" />
+    
+    
     <Button
         android:id="@+id/half_rest"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignTop="@+id/rest"
-        android:layout_toLeftOf="@+id/rest"
+        android:layout_toLeftOf="@+id/whole_rest"
+        android:background="@drawable/button_design"
+        android:onClick="onNibuRest"
         android:text="二分休符" />
     
     <Button
@@ -83,6 +130,8 @@
         android:layout_height="60dp"
         android:layout_alignTop="@+id/rest"
         android:layout_toLeftOf="@+id/half_rest"
+        android:background="@drawable/button_design"
+        android:onClick="onShibuRest"
         android:text="四分休符" />
     <Button
         android:id="@+id/eighth_rest"
@@ -90,6 +139,17 @@
         android:layout_height="60dp"
         android:layout_alignTop="@+id/rest"
         android:layout_toLeftOf="@+id/quarter_rest"
+        android:background="@drawable/button_design"
+        android:onClick="onHatibuRest"
         android:text="八分休符" />
+    <Button
+        android:id="@+id/sixteenth_rest"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignTop="@+id/rest"
+        android:layout_toLeftOf="@+id/eighth_rest"
+        android:background="@drawable/button_design"
+        android:onClick="onJurokubuRest"
+        android:text="一六分休符" />
 
 </RelativeLayout>
