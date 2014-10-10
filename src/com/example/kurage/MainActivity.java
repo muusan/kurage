@@ -216,6 +216,22 @@ public class MainActivity extends Activity implements OnClickListener {
 		});
 	}
 
+	public void onRelativeLayout(View v) {
+		if (note[0].getVisibility() == View.VISIBLE) {
+			play.setVisibility(View.INVISIBLE);
+			set.setVisibility(View.INVISIBLE);
+			for (int i = 0; i < 6; i++) {
+				note[i].setVisibility(View.INVISIBLE);
+			}
+			for (int i = 0; i < 6; i++) {
+				rest[i].setVisibility(View.INVISIBLE);
+			}
+		}
+
+		// Context context = v.getContext();
+		// Toast.makeText(context, "かくにん", Toast.LENGTH_SHORT).show();
+	}
+
 	// menuを押す
 	public void onMenu(View v) {
 

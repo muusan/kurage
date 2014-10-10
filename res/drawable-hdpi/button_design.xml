@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<!-- ボタンが押されたときの処理 -->
+	<!-- ボタンが押しているときの処理 -->
 	<item android:state_pressed="true">
 		<shape
 			xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,7 +12,7 @@
 			<corners android:radius="100dp" />
 		</shape>
 	</item>
-	<!-- ボタンが押されてないときの処理 -->
+	<!-- ボタンが押していないときの処理 -->
 	<item android:state_pressed="false">
 		<shape
 			xmlns:android="http://schemas.android.com/apk/res/android"
