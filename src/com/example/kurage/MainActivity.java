@@ -140,30 +140,66 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		// ハンドラー
 		final Handler h = new Handler();
-		// ハンドラーを実行(Runnableのrunメソッドを実行する)
-		h.post(new Runnable() {
 
+		// スレッド起動
+
+		(new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// スムーススクロールを行いつつ、countの値を増やす
-				scrollView.smoothScrollBy(1, 0);
-				// System.out.println("scrollX: " + scrollView.getScrollX());
-				if (scrollView.getScrollX() < score.getWidth() - scrollView.getWidth()) {
-					// 10ms後にもう一回このrunメソッドを実行
-					h.postDelayed(this, 5);
+				// 通常バックグランドをここに記述します
+
+				h.post(new Runnable() {
+					@Override
+					public void run() {
+						// スムーススクロールを行いつつ、countの値を増やす
+						scrollView.smoothScrollBy(1, 0);
+						// System.out.println("scrollX: " +
+						// scrollView.getScrollX());
+						if (scrollView.getScrollX() < score.getWidth() - scrollView.getWidth()) {
+							// 10ms後にもう一回このrunメソッドを実行
+							h.postDelayed(this, 5);
+						}
+					}
+				});
+
+				// 音の再生
+				sp.play();// 再生開始
+
+				// 音符あれいにはいってる音符の情報(typeとlength)を一つずつ読み込む
+				for (int i = 0; i < onpuArray.size(); i++) {
+					onpu oto = onpuArray.get(i);
+					sp.write(oto.type, oto.length);
 				}
+
+				sp.stop(); // 再生終了
 			}
-		});
-		// 音の再生
-		sp.play();// 再生開始
+		})).start();
 
-		// 音符あれいにはいってる音符の情報(typeとlength)を一つずつ読み込む
-		for (int i = 0; i < onpuArray.size(); i++) {
-			onpu oto = onpuArray.get(i);
-			sp.write(oto.type, oto.length);
-		}
-
-		sp.stop(); // 再生終了
+		// ハンドラーを実行(Runnableのrunメソッドを実行する)
+		// h.post(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// // スムーススクロールを行いつつ、countの値を増やす
+		// scrollView.smoothScrollBy(1, 0);
+		// // System.out.println("scrollX: " + scrollView.getScrollX());
+		// if (scrollView.getScrollX() < score.getWidth() -
+		// scrollView.getWidth()) {
+		// // 10ms後にもう一回このrunメソッドを実行
+		// h.postDelayed(this, 5);
+		// }
+		// }
+		// });
+		// // 音の再生
+		// sp.play();// 再生開始
+		//
+		// // 音符あれいにはいってる音符の情報(typeとlength)を一つずつ読み込む
+		// for (int i = 0; i < onpuArray.size(); i++) {
+		// onpu oto = onpuArray.get(i);
+		// sp.write(oto.type, oto.length);
+		// }
+		//
+		// sp.stop(); // 再生終了
 
 	}
 
@@ -373,6 +409,10 @@ public class MainActivity extends Activity implements OnClickListener {
 				}
 				// weightSumを増やす。
 				weightSum += weight;
+
+				// selectNoteType.getWeight()をfloatのままでいさせたい....
+				onpu note = new onpu((int) selectNoteType.getWeight(), selectNoteType.getType(), "C");
+				onpuArray.add(note);
 
 			}
 		}

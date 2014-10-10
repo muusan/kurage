@@ -30,7 +30,7 @@ public enum NoteType {
 
 		@Override
 		int getType() {
-			return NOTE;
+			return SoundPlayer.NOTE;
 		}
 	},
 	HALF("二分音符") {
@@ -46,7 +46,7 @@ public enum NoteType {
 
 		@Override
 		int getType() {
-			return NOTE;
+			return SoundPlayer.NOTE;
 		}
 	},
 	QUARTER("四分音符") {
@@ -62,7 +62,7 @@ public enum NoteType {
 
 		@Override
 		int getType() {
-			return NOTE;
+			return SoundPlayer.NOTE;
 		}
 	},
 	EIGHTH("八分音符") {
@@ -78,7 +78,7 @@ public enum NoteType {
 
 		@Override
 		int getType() {
-			return NOTE;
+			return SoundPlayer.NOTE;
 		}
 	},
 	SIXTEENTH("一六分音符") {
@@ -94,7 +94,7 @@ public enum NoteType {
 
 		@Override
 		int getType() {
-			return NOTE;
+			return SoundPlayer.NOTE;
 		}
 	},
 	WHOLE_REST("全休符") {
@@ -110,7 +110,7 @@ public enum NoteType {
 
 		@Override
 		int getType() {
-			return REST;
+			return SoundPlayer.REST;
 		}
 	},
 	HALF_REST("二分休符") {
@@ -126,7 +126,7 @@ public enum NoteType {
 
 		@Override
 		int getType() {
-			return REST;
+			return SoundPlayer.REST;
 		}
 	},
 	QUARTER_REST("四分休符") {
@@ -142,7 +142,7 @@ public enum NoteType {
 
 		@Override
 		int getType() {
-			return REST;
+			return SoundPlayer.REST;
 		}
 	},
 	EIGHTH_REST("八分休符") {
@@ -158,7 +158,7 @@ public enum NoteType {
 
 		@Override
 		int getType() {
-			return REST;
+			return SoundPlayer.REST;
 		}
 	},
 	SIXTEENTH_REST("一六分休符") {
@@ -174,7 +174,7 @@ public enum NoteType {
 
 		@Override
 		int getType() {
-			return REST;
+			return SoundPlayer.REST;
 		}
 	};
 
@@ -201,8 +201,5 @@ public enum NoteType {
 	abstract int getType();
 
 	public static float MAX_SIZE = 16.0f;
-
-	public final static int NOTE = 10001; // タイプ：音符
-	public final static int REST = 10002; // タイプ：休符
 
 }

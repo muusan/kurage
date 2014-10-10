@@ -1,6 +1,5 @@
 package com.example.kurage;
 
-
 public class onpu {
 	int length;// 音符の長さ
 	int type;// 音があるかないか（音符か休符か）
@@ -8,11 +7,10 @@ public class onpu {
 
 	// LinearLayout.LayoutParams params;
 
-	public onpu(int length, int type, String pitch /* ,int weight */) {
+	public onpu(int length, int type, String pitch) {
 		this.length = length;
 		this.type = type;
 		this.pitch = pitch;
-		// this.params.weight = weight;
 
 	}
 }

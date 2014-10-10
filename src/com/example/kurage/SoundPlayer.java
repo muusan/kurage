@@ -94,13 +94,13 @@ public class SoundPlayer {
 	 * @param noteType
 	 *            音符か休符かを選ぶ. SoundPlayer.NOTE 音符 SoundPlayer.REST 休符
 	 * @param noteLength
-	 *            音の長さを入れる 8分なら8, 4分なら4, ...などなどで入れる.
+	 *            音の長さを入れる 8分なら2, 4分なら4,2分なら1 ...などなどで入れる.
 	 */
 	public void write(int noteType, int noteLength) {
 		if (noteType == SoundPlayer.NOTE) {
-			at.write(note, 0, tempo / noteLength); // 音符の再生
+			at.write(note, 0, tempo / (16 / noteLength)); // 音符の再生
 		} else if (noteType == SoundPlayer.REST) {
-			at.write(rest, 0, tempo / noteLength); // 休符の再生
+			at.write(rest, 0, tempo / (16 / noteLength)); // 休符の再生
 		}
 	}
 
