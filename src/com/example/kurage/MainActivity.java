@@ -216,6 +216,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		});
 	}
 
+	// MENUボタン以外を押したとき
 	public void onRelativeLayout(View v) {
 		if (note[0].getVisibility() == View.VISIBLE) {
 			play.setVisibility(View.INVISIBLE);
