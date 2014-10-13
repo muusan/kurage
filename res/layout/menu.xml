@@ -6,7 +6,7 @@
     android:id="@+id/relativeLayout" >
     <!--  android:onClick="onRelativeLayout"-->
     
-    <Button
+    <ToggleButton
             android:id="@+id/menu"
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -25,6 +25,7 @@
         android:layout_alignTop="@+id/menu"
         android:layout_toLeftOf="@+id/menu"
         android:background="@drawable/button_design"
+        android:onClick="play"
         android:text="再生" />
     
     <Button
@@ -34,7 +35,8 @@
         android:layout_alignTop="@+id/menu"
         android:layout_toLeftOf="@+id/play"
         android:background="@drawable/button_design"
-        android:text="設定" />
+        android:text="追加"
+        android:onClick="addMeasure" />
 
     <Button
         android:id="@+id/note"

@@ -2,6 +2,11 @@ package com.example.kurage;
 
 import java.util.ArrayList;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,10 +31,11 @@ public class MainActivity extends Activity implements OnClickListener {
 	ArrayList<Onpu> onpuArray = new ArrayList<Onpu>();
 	SoundPlayer sp;
 	NoteType selectNoteType;
-	Button play, set, note[] = new Button[6], rest[] = new Button[6];
+	Button set, note[] = new Button[5], rest[] = new Button[6], buttons[] = new Button[4];
 
 	// score　譜面,　measure 一小節,　line　五線譜
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,29 +45,31 @@ public class MainActivity extends Activity implements OnClickListener {
 		scrollView = (HorizontalScrollView) findViewById(R.id.scoreScrollView);
 		LinearLayout firstMeasure = (LinearLayout) findViewById(R.id.firstMeasure);
 
-		play = (Button) findViewById(R.id.play);
-		set = (Button) findViewById(R.id.set);
-		note[0] = (Button) findViewById(R.id.note);
-		note[1] = (Button) findViewById(R.id.whole);
-		note[2] = (Button) findViewById(R.id.half);
-		note[3] = (Button) findViewById(R.id.quarter);
-		note[4] = (Button) findViewById(R.id.eighth);
-		note[5] = (Button) findViewById(R.id.sixteenth);
+		buttons[0] = (Button) findViewById(R.id.play);
+		buttons[1] = (Button) findViewById(R.id.set);
+		buttons[2] = (Button) findViewById(R.id.note);
+		buttons[3] = (Button) findViewById(R.id.rest);
 
-		rest[0] = (Button) findViewById(R.id.rest);
-		rest[1] = (Button) findViewById(R.id.whole_rest);
-		rest[2] = (Button) findViewById(R.id.half_rest);
-		rest[3] = (Button) findViewById(R.id.quarter_rest);
-		rest[4] = (Button) findViewById(R.id.eighth_rest);
-		rest[5] = (Button) findViewById(R.id.sixteenth_rest);
+		note[0] = (Button) findViewById(R.id.whole);
+		note[1] = (Button) findViewById(R.id.half);
+		note[2] = (Button) findViewById(R.id.quarter);
+		note[3] = (Button) findViewById(R.id.eighth);
+		note[4] = (Button) findViewById(R.id.sixteenth);
 
-		play.setVisibility(View.INVISIBLE);
-		set.setVisibility(View.INVISIBLE);
+		rest[0] = (Button) findViewById(R.id.whole_rest);
+		rest[1] = (Button) findViewById(R.id.half_rest);
+		rest[2] = (Button) findViewById(R.id.quarter_rest);
+		rest[3] = (Button) findViewById(R.id.eighth_rest);
+		rest[4] = (Button) findViewById(R.id.sixteenth_rest);
 
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 4; i++) {
+			buttons[i].setVisibility(View.VISIBLE);
+			buttons[i].setAlpha(0f);
+		}
+		for (int i = 0; i < 5; i++) {
 			note[i].setVisibility(View.INVISIBLE);
 		}
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 5; i++) {
 			rest[i].setVisibility(View.INVISIBLE);
 		}
 
@@ -237,13 +246,14 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	// MENUボタン以外を押したとき
 	public void onRelativeLayout(View v) {
-		if (note[0].getVisibility() == View.VISIBLE) {
-			play.setVisibility(View.INVISIBLE);
-			set.setVisibility(View.INVISIBLE);
-			for (int i = 0; i < 6; i++) {
+		if (buttons[0].getVisibility() == View.VISIBLE) {
+			for (int i = 0; i < 4; i++) {
+				buttons[i].setVisibility(View.INVISIBLE);
+			}
+			for (int i = 0; i < 5; i++) {
 				note[i].setVisibility(View.INVISIBLE);
 			}
-			for (int i = 0; i < 6; i++) {
+			for (int i = 0; i < 5; i++) {
 				rest[i].setVisibility(View.INVISIBLE);
 			}
 		}
@@ -253,44 +263,139 @@ public class MainActivity extends Activity implements OnClickListener {
 	}
 
 	// menuを押す
+	@SuppressLint("NewApi")
 	public void onMenu(View v) {
 
-		if (note[0].getVisibility() == View.INVISIBLE) {
-			play.setVisibility(View.VISIBLE);
-			set.setVisibility(View.VISIBLE);
-			note[0].setVisibility(View.VISIBLE);
-			rest[0].setVisibility(View.VISIBLE);
+		final CompoundButton radio = (CompoundButton) v;
+		float width = v.getWidth();
 
-			TranslateAnimation t = new TranslateAnimation(60, 0, 0, 0);
-			// (0,0)から(100,100)に移動
-			t.setDuration(150); // 3000msかけてアニメーションする
-			play.startAnimation(t); // アニメーション適用
+		for (int i = 0; i < buttons.length - 2; i++) {
 
-			TranslateAnimation t1 = new TranslateAnimation(120, 0, 0, 0);
-			// (0,0)から(100,100)に移動
-			t1.setDuration(200); // 3000msかけてアニメーションする
-			set.startAnimation(t1); // アニメーション適用
+			PropertyValuesHolder alpha;
+			PropertyValuesHolder trans;
 
-			TranslateAnimation t2 = new TranslateAnimation(0, 0, 60, 0);
-			// (0,0)から(100,100)に移動
-			t2.setDuration(150); // 3000msかけてアニメーションする
-			note[0].startAnimation(t2); // アニメーション適用
-
-			TranslateAnimation t3 = new TranslateAnimation(0, 0, 120, 0);
-			// (0,0)から(100,100)に移動
-			t3.setDuration(200); // 3000msかけてアニメーションする
-			rest[0].startAnimation(t3); // アニメーション適用
-
-		} else if (note[0].getVisibility() == View.VISIBLE) {
-			play.setVisibility(View.INVISIBLE);
-			set.setVisibility(View.INVISIBLE);
-			for (int i = 0; i < 6; i++) {
-				note[i].setVisibility(View.INVISIBLE);
+			if (radio.isChecked()) {
+				alpha = PropertyValuesHolder.ofFloat("alpha", buttons[i].getAlpha(), 1f);
+				if (buttons[i].getTranslationX() <= 0) {
+					trans = PropertyValuesHolder.ofFloat("translationX", width + buttons[i].getWidth(), 0f);
+				}
+				trans = PropertyValuesHolder.ofFloat("translationX", buttons[i].getTranslationX(), 0f);
+			} else {
+				alpha = PropertyValuesHolder.ofFloat("alpha", buttons[i].getAlpha(), 0f);
+				trans = PropertyValuesHolder.ofFloat("translationX", buttons[i].getTranslationX(), width);
 			}
-			for (int i = 0; i < 6; i++) {
-				rest[i].setVisibility(View.INVISIBLE);
+
+			ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(buttons[i], alpha, trans);
+			anim.setDuration(300);
+
+			final int index = i;
+			anim.addListener(new AnimatorListener() {
+
+				@Override
+				public void onAnimationStart(Animator animation) {
+				}
+
+				@Override
+				public void onAnimationRepeat(Animator animation) {
+				}
+
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					// TODO Auto-generated method stub
+					buttons[index].setClickable(radio.isChecked());
+				}
+
+				@Override
+				public void onAnimationCancel(Animator animation) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+
+			anim.start();
+
+			int j = i + 2;
+			if (radio.isChecked()) {
+				alpha = PropertyValuesHolder.ofFloat("alpha", buttons[j].getAlpha(), 1f);
+				if (buttons[i].getTranslationX() <= 0) {
+					trans = PropertyValuesHolder.ofFloat("translationY", width + buttons[j].getWidth(), 0f);
+				}
+				trans = PropertyValuesHolder.ofFloat("translationY", buttons[j].getTranslationY(), 0f);
+			} else {
+				alpha = PropertyValuesHolder.ofFloat("alpha", buttons[j].getAlpha(), 0f);
+				trans = PropertyValuesHolder.ofFloat("translationY", buttons[j].getTranslationY(), width);
 			}
+
+			anim = ObjectAnimator.ofPropertyValuesHolder(buttons[j], alpha, trans);
+			anim.setDuration(300);
+
+			final int jndex = j;
+			anim.addListener(new AnimatorListener() {
+
+				@Override
+				public void onAnimationStart(Animator animation) {
+				}
+
+				@Override
+				public void onAnimationRepeat(Animator animation) {
+				}
+
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					// TODO Auto-generated method stub
+					buttons[jndex].setClickable(radio.isChecked());
+				}
+
+				@Override
+				public void onAnimationCancel(Animator animation) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+
+			anim.start();
+
+			width += buttons[i].getWidth();
 		}
+
+		// if (note[0].getVisibility() == View.INVISIBLE) {
+		// for (int i = 0; i < 4; i++) {
+		// buttons[i].setVisibility(View.VISIBLE);
+		// }
+		//
+		// TranslateAnimation t = new TranslateAnimation(60, 0, 0, 0);
+		// // (0,0)から(100,100)に移動
+		// t.setDuration(150); // 3000msかけてアニメーションする
+		// buttons[0].startAnimation(t); // アニメーション適用
+		//
+		// TranslateAnimation t1 = new TranslateAnimation(120, 0, 0, 0);
+		// // (0,0)から(100,100)に移動
+		// t1.setDuration(200); // 3000msかけてアニメーションする
+		// buttons[1].startAnimation(t1); // アニメーション適用
+		//
+		// TranslateAnimation t2 = new TranslateAnimation(0, 0, 60, 0);
+		// // (0,0)から(100,100)に移動
+		// t2.setDuration(150); // 3000msかけてアニメーションする
+		// buttons[2].startAnimation(t2); // アニメーション適用
+		//
+		// TranslateAnimation t3 = new TranslateAnimation(0, 0, 120, 0);
+		// // (0,0)から(100,100)に移動
+		// t3.setDuration(200); // 3000msかけてアニメーションする
+		// buttons[3].startAnimation(t3); // アニメーション適用
+		//
+		//
+		//
+		// } else if (note[0].getVisibility() == View.VISIBLE) {
+		// for (int i = 0; i < 5; i++) {
+		// buttons[i].setVisibility(View.INVISIBLE);
+		// }
+		// for (int i = 0; i < 5; i++) {
+		// note[i].setVisibility(View.INVISIBLE);
+		// }
+		// for (int i = 0; i < 5; i++) {
+		// rest[i].setVisibility(View.INVISIBLE);
+		// }
+		// }
 	}
 
 	public void onNote(View v) {
