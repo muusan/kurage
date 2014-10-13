@@ -22,7 +22,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	HorizontalScrollView scrollView;
 	LinearLayout score;
 	int measureWidth;
-	ArrayList<onpu> onpuArray = new ArrayList<onpu>();
+	ArrayList<Onpu> onpuArray = new ArrayList<Onpu>();
 	SoundPlayer sp;
 	NoteType selectNoteType;
 	Button play, set, note[] = new Button[6], rest[] = new Button[6];
@@ -74,9 +74,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		// 初めの小節にonClickを実装する
 		setOnLineClickListener(firstMeasure, mOnLineClickListener);
 
-		for (int i = 0; i < score.getChildCount(); i++) {
-			// scoreの子(つまりmeasure)にmOnLineClickListenerをセットする
-		}
+		// for (int i = 0; i < score.getChildCount(); i++) {
+		// // scoreの子(つまりmeasure)にmOnLineClickListenerをセットする
+		// }
 		score.addView(createMeasure(this));
 	}
 
@@ -132,6 +132,15 @@ public class MainActivity extends Activity implements OnClickListener {
 
 	// 再生する
 	public void play(View v) {
+		// for (int i = 0; i < score.getChildCount(); i++) {
+		// // scoreの子(つまりmeasure)の個数分繰り返す
+		// LinearLayout measure = (LinearLayout) score.getChildAt(i);
+		// for (int i1 = 0; i1 < measure.getChildCount(); i1++) {
+		// ImageView note = (ImageView) measure.getChildAt(i1);
+		//
+		// }
+		// }
+
 		measureWidth = score.getChildAt(0).getWidth();
 		// System.out.println("measureWidth: " + measureWidth);
 
@@ -167,39 +176,13 @@ public class MainActivity extends Activity implements OnClickListener {
 
 				// 音符あれいにはいってる音符の情報(typeとlength)を一つずつ読み込む
 				for (int i = 0; i < onpuArray.size(); i++) {
-					onpu oto = onpuArray.get(i);
+					Onpu oto = onpuArray.get(i);
 					sp.write(oto.type, oto.length);
 				}
 
 				sp.stop(); // 再生終了
 			}
 		})).start();
-
-		// ハンドラーを実行(Runnableのrunメソッドを実行する)
-		// h.post(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		// // スムーススクロールを行いつつ、countの値を増やす
-		// scrollView.smoothScrollBy(1, 0);
-		// // System.out.println("scrollX: " + scrollView.getScrollX());
-		// if (scrollView.getScrollX() < score.getWidth() -
-		// scrollView.getWidth()) {
-		// // 10ms後にもう一回このrunメソッドを実行
-		// h.postDelayed(this, 5);
-		// }
-		// }
-		// });
-		// // 音の再生
-		// sp.play();// 再生開始
-		//
-		// // 音符あれいにはいってる音符の情報(typeとlength)を一つずつ読み込む
-		// for (int i = 0; i < onpuArray.size(); i++) {
-		// onpu oto = onpuArray.get(i);
-		// sp.write(oto.type, oto.length);
-		// }
-		//
-		// sp.stop(); // 再生終了
 
 	}
 
@@ -411,8 +394,8 @@ public class MainActivity extends Activity implements OnClickListener {
 				weightSum += weight;
 
 				// selectNoteType.getWeight()をfloatのままでいさせたい....
-				onpu note = new onpu((int) selectNoteType.getWeight(), selectNoteType.getType(), "C");
-				onpuArray.add(note);
+				Onpu onpu = new Onpu((int) selectNoteType.getWeight(), selectNoteType.getType(), "C");
+				onpuArray.add(onpu);
 
 			}
 		}
@@ -465,6 +448,12 @@ public class MainActivity extends Activity implements OnClickListener {
 						if (note == clickNote) {
 							// もし押した音符とnoteが左から数えて縦の番目と、上から数えて横の番目が同じとき
 							note.setImageResource(selectNoteType.getResourceId());
+
+							onpuArray.remove(pos);
+
+							Onpu onpu = new Onpu((int) selectNoteType.getWeight(), selectNoteType.getType(), "C");
+							onpuArray.add(onpu);
+
 						} else {
 							// もし押した音符とnoteが左から数えて縦の番目が同じとき(五線譜の高さだけ違うとき)
 							note.setImageBitmap(null);
@@ -485,9 +474,11 @@ public class MainActivity extends Activity implements OnClickListener {
 						// 選択したlineの音符には画像をつける
 						if (line == clickLine) {
 							note.setImageResource(selectNoteType.getResourceId());
+							Onpu onpu = new Onpu((int) selectNoteType.getWeight(), selectNoteType.getType(), "C");
+							onpuArray.add(onpu);
 						}
-
 						line.addView(note, pos);
+
 					}
 				}
 			}
