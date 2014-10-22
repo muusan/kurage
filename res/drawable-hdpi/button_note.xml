@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list 
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-	<!-- ボタンが押しているときの処理 -->
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- ボタンが押しているときの処理 -->
 	<item android:state_pressed="true">
 		<shape
 			xmlns:android="http://schemas.android.com/apk/res/android"
@@ -29,7 +28,7 @@
 
 	<item>
         <bitmap
-            android:src="@drawable/menu"
+            android:src="@drawable/note"
             android:gravity="center" />
     </item>
 </layer-list>

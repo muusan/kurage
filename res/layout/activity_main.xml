@@ -1,19 +1,98 @@
 <FrameLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/FrameLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    android:layout_height="match_parent" 
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    xmlns:tools="http://schemas.android.com/tools" 
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin" >
+        android:paddingBottom="5dp"
+    	android:paddingRight="@dimen/activity_horizontal_margin"
+    	android:paddingTop="5dp" >
+    
+        
+        <LinearLayout 
+            android:id="@+id/LinearLayout2"
+            android:layout_width="30dp" 
+            android:layout_height="match_parent" 
+            android:orientation="vertical">
+            
+            
+            <ImageView 
+                android:id="@+id/imageView1" 
+                android:layout_width="20dp" 
+                android:layout_height="30dp" 
+                android:layout_marginBottom="5dp"
+                android:background="#ff00f8"/>
+            
+            <ImageView 
+                android:id="@+id/imageView2" 
+                android:layout_width="20dp" 
+                android:layout_height="30dp" 
+                android:layout_marginBottom="5dp"
+                android:background="#ff00b7"/>
+            
+            <ImageView 
+                android:id="@+id/imageView3" 
+                android:layout_width="20dp" 
+                android:layout_height="30dp" 
+                android:layout_marginBottom="5dp"
+                android:background="#ff0000"/>
+            
+            <ImageView 
+                android:id="@+id/imageView4" 
+                android:layout_width="20dp" 
+                android:layout_height="30dp" 
+                android:layout_marginBottom="5dp"
+                android:background="#ff8f00"/>
+            
+            <ImageView 
+                android:id="@+id/imageView5" 
+                android:layout_width="20dp" 
+                android:layout_height="30dp" 
+                android:layout_marginBottom="5dp"
+                android:background="#ffde00"/>
+            
+            <ImageView 
+                android:id="@+id/imageView6" 
+                android:layout_width="20dp" 
+                android:layout_height="30dp" 
+                android:layout_marginBottom="5dp"
+                android:background="#9cff00"/>
+            
+            <ImageView 
+                android:id="@+id/imageView7" 
+                android:layout_width="20dp" 
+                android:layout_height="30dp" 
+                android:layout_marginBottom="5dp"
+                android:background="#00ffc4"/>
+            
+            <ImageView 
+                android:id="@+id/imageView8" 
+                android:layout_width="20dp" 
+                android:layout_height="30dp" 
+                android:layout_marginBottom="5dp"
+                android:background="#00ebff"/>
+            
+            <ImageView 
+                android:id="@+id/imageView9" 
+                android:layout_width="20dp" 
+                android:layout_height="30dp" 
+                android:layout_marginBottom="5dp"
+                android:background="#008fff"/>
+            
+            <ImageView 
+                android:id="@+id/imageView10" 
+                android:layout_width="20dp" 
+                android:layout_height="30dp" 
+                android:layout_marginBottom="5dp" 
+                android:background="#b700ff"/>
+            
+        </LinearLayout>
 
         
         <HorizontalScrollView

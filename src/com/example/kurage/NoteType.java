@@ -16,6 +16,11 @@ public enum NoteType {
 		int getType() {
 			return 0;
 		}
+
+		@Override
+		int getNumber() {
+			return 0;
+		}
 	},
 	WHOLE("全音符") {
 		@Override
@@ -31,6 +36,11 @@ public enum NoteType {
 		@Override
 		int getType() {
 			return SoundPlayer.NOTE;
+		}
+
+		@Override
+		int getNumber() {
+			return 0;
 		}
 	},
 	HALF("二分音符") {
@@ -48,6 +58,11 @@ public enum NoteType {
 		int getType() {
 			return SoundPlayer.NOTE;
 		}
+
+		@Override
+		int getNumber() {
+			return 1;
+		}
 	},
 	QUARTER("四分音符") {
 		@Override
@@ -63,6 +78,11 @@ public enum NoteType {
 		@Override
 		int getType() {
 			return SoundPlayer.NOTE;
+		}
+
+		@Override
+		int getNumber() {
+			return 2;
 		}
 	},
 	EIGHTH("八分音符") {
@@ -80,6 +100,11 @@ public enum NoteType {
 		int getType() {
 			return SoundPlayer.NOTE;
 		}
+
+		@Override
+		int getNumber() {
+			return 3;
+		}
 	},
 	SIXTEENTH("一六分音符") {
 		@Override
@@ -95,6 +120,11 @@ public enum NoteType {
 		@Override
 		int getType() {
 			return SoundPlayer.NOTE;
+		}
+
+		@Override
+		int getNumber() {
+			return 4;
 		}
 	},
 	WHOLE_REST("全休符") {
@@ -112,6 +142,11 @@ public enum NoteType {
 		int getType() {
 			return SoundPlayer.REST;
 		}
+
+		@Override
+		int getNumber() {
+			return 5;
+		}
 	},
 	HALF_REST("二分休符") {
 		@Override
@@ -127,6 +162,11 @@ public enum NoteType {
 		@Override
 		int getType() {
 			return SoundPlayer.REST;
+		}
+
+		@Override
+		int getNumber() {
+			return 6;
 		}
 	},
 	QUARTER_REST("四分休符") {
@@ -144,6 +184,11 @@ public enum NoteType {
 		int getType() {
 			return SoundPlayer.REST;
 		}
+
+		@Override
+		int getNumber() {
+			return 7;
+		}
 	},
 	EIGHTH_REST("八分休符") {
 		@Override
@@ -160,6 +205,11 @@ public enum NoteType {
 		int getType() {
 			return SoundPlayer.REST;
 		}
+
+		@Override
+		int getNumber() {
+			return 8;
+		}
 	},
 	SIXTEENTH_REST("一六分休符") {
 		@Override
@@ -175,6 +225,11 @@ public enum NoteType {
 		@Override
 		int getType() {
 			return SoundPlayer.REST;
+		}
+
+		@Override
+		int getNumber() {
+			return 9;
 		}
 	};
 
@@ -199,6 +254,8 @@ public enum NoteType {
 	abstract int getResourceId();
 
 	abstract int getType();
+
+	abstract int getNumber();
 
 	public static float MAX_SIZE = 16.0f;
 
