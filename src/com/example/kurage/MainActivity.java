@@ -35,6 +35,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	ImageView[] image = new ImageView[10];
 	LinearLayout ll;
 	String[] color = new String[10];
+	boolean noteCleck = false, restCleck = false;
 
 	// score　譜面,　measure 一小節,　line　五線譜
 
@@ -122,22 +123,6 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 		// 押した音符と同じ音符のイメージビューだけ画像をいれる
 		image[selectNoteType.getNumber()].setBackgroundResource(selectNoteType.getResourceId());
-
-		//
-		// final CompoundButton button = (CompoundButton) v;
-		// ll.removeViewAt(selectNoteType.getNumber());
-		// ImageView image = new ImageView(this);
-		// LinearLayout.LayoutParams param1 = new LinearLayout.LayoutParams(10,
-		// 25);
-		// param1.bottomMargin = 10;
-		// image.setLayoutParams(param1);
-		//
-		// if (button.isChecked()) {
-		// image.setBackgroundResource(selectNoteType.getResourceId());
-		// } else {
-		// image.setBackgroundColor(Color.parseColor("#ff00f8"));
-		// }
-		// ll.addView(image, selectNoteType.getNumber());
 
 	}
 
@@ -349,6 +334,8 @@ public class MainActivity extends Activity implements OnClickListener {
 
 		final CompoundButton radio = (CompoundButton) v;
 		float width = v.getWidth();
+		final CompoundButton noteButton = (CompoundButton) buttons[2];
+		final CompoundButton restButton = (CompoundButton) buttons[3];
 
 		for (int i = 0; i < buttons.length - 2; i++) {
 
@@ -441,72 +428,82 @@ public class MainActivity extends Activity implements OnClickListener {
 
 			width += buttons[i].getWidth();
 		}
-		// // noteやrestが見えてるとき
-		// for (int i = 0; i < note.length; i++) {
-		//
-		// PropertyValuesHolder alpha;
-		// PropertyValuesHolder trans;
-		//
-		// if (!radio.isChecked()) {
-		// if (note[i].getVisibility() == View.VISIBLE) {
-		// alpha = PropertyValuesHolder.ofFloat("alpha", note[i].getAlpha(),
-		// 0f);
-		// trans = PropertyValuesHolder.ofFloat("translationX",
-		// note[i].getTranslationX(), width);
-		// ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(note[i],
-		// alpha, trans);
-		// anim.setDuration(300);
-		//
-		// final int index = i;
-		// anim.addListener(new AnimatorListener() {
-		//
-		// @Override
-		// public void onAnimationStart(Animator animation) {
-		// }
-		//
-		// @Override
-		// public void onAnimationRepeat(Animator animation) {
-		// }
-		//
-		// @Override
-		// public void onAnimationEnd(Animator animation) {
-		// // TODO Auto-generated method stub
-		// note[index].setClickable(radio.isChecked());
-		// }
-		//
-		// @Override
-		// public void onAnimationCancel(Animator animation) {
-		// // TODO Auto-generated method stub
-		//
-		// }
-		// });
-		//
-		// anim.start();
-		//
-		// note[i].setVisibility(View.INVISIBLE);
-		// note[i].setAlpha(1f);
-		// System.out.println("onMenu.note.getAlpha(): " + note[i].getAlpha());
-		// } else {
-		// }
-		// }
-		//
-		// }
+		if (noteCleck = true) {
+			for (int i = 0; i < note.length; i++) {
 
+				PropertyValuesHolder alpha1;
+				PropertyValuesHolder trans1;
+
+				alpha1 = PropertyValuesHolder.ofFloat("alpha", note[i].getAlpha(), 0f);
+				trans1 = PropertyValuesHolder.ofFloat("translationX", note[i].getTranslationX(), width);
+
+				ObjectAnimator anim1 = ObjectAnimator.ofPropertyValuesHolder(note[i], alpha1, trans1);
+				anim1.setDuration(300);
+
+				anim1.start();
+
+				width += note[i].getWidth();
+
+			}
+			noteCleck = false;
+			noteButton.setChecked(false);
+		} else {
+
+		}
+
+		if (restCleck = true) {
+			for (int i = 0; i < rest.length; i++) {
+
+				PropertyValuesHolder alpha1;
+				PropertyValuesHolder trans1;
+
+				alpha1 = PropertyValuesHolder.ofFloat("alpha", rest[i].getAlpha(), 0f);
+				trans1 = PropertyValuesHolder.ofFloat("translationX", rest[i].getTranslationX(), width);
+
+				ObjectAnimator anim1 = ObjectAnimator.ofPropertyValuesHolder(rest[i], alpha1, trans1);
+				anim1.setDuration(300);
+
+				anim1.start();
+
+				width += rest[i].getWidth();
+
+			}
+			restCleck = false;
+			restButton.setChecked(false);
+		} else {
+
+		}
 	}
 
 	@SuppressLint("NewApi")
 	public void onNote(View v) {
-		System.out.println("onNoteできるよ");
-
-		final CompoundButton radio = (CompoundButton) v;
+		// System.out.println("onNoteできるよ");
+		noteCleck = true;
+		final CompoundButton noteButton = (CompoundButton) v;
 		float width = v.getWidth();
+
+		final CompoundButton restButton = (CompoundButton) buttons[3];
+		// restButton.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		//
+		// @Override
+		// public void onCheckedChanged(CompoundButton buttonView, boolean
+		// isChecked) {
+		// // TODO Auto-generated method stub
+		// if (isChecked == true) {
+		// alpha = PropertyValuesHolder.ofFloat("alpha", rest[i].getAlpha(),
+		// 0f);
+		// trans = PropertyValuesHolder.ofFloat("translationX",
+		// rest[i].getTranslationX(), width);
+		// }
+		// }
+		// });
 
 		for (int i = 0; i < note.length; i++) {
 
 			PropertyValuesHolder alpha;
 			PropertyValuesHolder trans;
 
-			if (radio.isChecked()) {
+			if (noteButton.isChecked() == true) {
 				alpha = PropertyValuesHolder.ofFloat("alpha", note[i].getAlpha(), 1f);
 				if (note[i].getTranslationX() <= 0) {
 					trans = PropertyValuesHolder.ofFloat("translationX", width, 0f);
@@ -517,6 +514,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			} else {
 				alpha = PropertyValuesHolder.ofFloat("alpha", note[i].getAlpha(), 0f);
 				trans = PropertyValuesHolder.ofFloat("translationX", note[i].getTranslationX(), width);
+
 			}
 
 			ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(note[i], alpha, trans);
@@ -536,7 +534,8 @@ public class MainActivity extends Activity implements OnClickListener {
 				@Override
 				public void onAnimationEnd(Animator animation) {
 					// TODO Auto-generated method stub
-					note[index].setClickable(radio.isChecked());
+					note[index].setClickable(noteButton.isChecked());
+
 				}
 
 				@Override
@@ -549,47 +548,49 @@ public class MainActivity extends Activity implements OnClickListener {
 			anim.start();
 
 			width += note[i].getWidth();
+
 		}
-		// if (note[1].getVisibility() == View.VISIBLE) {
-		// for (int i = 0; i < 5; i++) {
-		// note[i].setVisibility(View.INVISIBLE);
-		//
-		// TranslateAnimation t = new TranslateAnimation(0, i * 100, 0, 0);
-		// // (0,0)から(100,100)に移動
-		// t.setDuration(100 + i * 50); // 3000msかけてアニメーションする
-		// note[i].startAnimation(t); // アニメーション適用
-		// }
-		//
-		// } else if (note[1].getVisibility() == View.INVISIBLE) {
-		// for (int i = 0; i < 5; i++) {
-		// note[i].setVisibility(View.VISIBLE);
-		// rest[i].setVisibility(View.INVISIBLE);
-		//
-		// TranslateAnimation t = new TranslateAnimation(i * 100, 0, 0, 0);
-		// // (0,0)から(100,100)に移動
-		// t.setDuration(100 + i * 50); // 3000msかけてアニメーションする
-		// note[i].startAnimation(t); // アニメーション適用
-		//
-		// // System.out.println("note.getAlpha(): " + note[i].getAlpha());
-		//
-		// }
-		//
-		// }
+
+		// System.out.println("＼( 'ω')／" + restCleck);
+		// メニューの休符ボタンが表示されてるときに、音符ボタンが押されたらアニメーションしながら定位置にもどす！
+		if (restCleck = true) {
+			for (int i = 0; i < rest.length; i++) {
+
+				PropertyValuesHolder alpha1;
+				PropertyValuesHolder trans1;
+
+				alpha1 = PropertyValuesHolder.ofFloat("alpha", rest[i].getAlpha(), 0f);
+				trans1 = PropertyValuesHolder.ofFloat("translationX", rest[i].getTranslationX(), width);
+
+				ObjectAnimator anim1 = ObjectAnimator.ofPropertyValuesHolder(rest[i], alpha1, trans1);
+				anim1.setDuration(300);
+
+				anim1.start();
+
+				width += rest[i].getWidth();
+
+			}
+			restCleck = false;
+			restButton.setChecked(false);
+		} else {
+
+		}
 	}
 
 	@SuppressLint("NewApi")
 	public void onRest(View v) {
-
-		final CompoundButton radio = (CompoundButton) v;
+		restCleck = true;
+		final CompoundButton restButton = (CompoundButton) v;
 		float width = v.getWidth();
+		final CompoundButton noteButton = (CompoundButton) buttons[2];
 
 		for (int i = 0; i < rest.length; i++) {
 
 			PropertyValuesHolder alpha;
 			PropertyValuesHolder trans;
 
-			if (radio.isChecked()) {
-				System.out.println("rest[i]: " + rest[i]);
+			if (restButton.isChecked()) {
+				// System.out.println("rest[i]: " + rest[i]);
 				alpha = PropertyValuesHolder.ofFloat("alpha", rest[i].getAlpha(), 1f);
 				if (rest[i].getTranslationX() <= 0) {
 					trans = PropertyValuesHolder.ofFloat("translationX", width, 0f);
@@ -619,7 +620,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				@Override
 				public void onAnimationEnd(Animator animation) {
 					// TODO Auto-generated method stub
-					rest[index].setClickable(radio.isChecked());
+					rest[index].setClickable(restButton.isChecked());
 				}
 
 				@Override
@@ -632,27 +633,29 @@ public class MainActivity extends Activity implements OnClickListener {
 			anim.start();
 
 			width += rest[i].getWidth();
+		}
 
-			// if (rest[1].getVisibility() == View.VISIBLE) {
-			// for (int i = 0; i < 5; i++) {
-			// rest[i].setVisibility(View.INVISIBLE);
-			//
-			// TranslateAnimation t = new TranslateAnimation(0, i * 100, 0, 0);
-			// // (0,0)から(100,100)に移動
-			// t.setDuration(100 + i * 50); // 3000msかけてアニメーションする
-			// rest[i].startAnimation(t); // アニメーション適用
-			// }
-			// } else if (rest[1].getVisibility() == View.INVISIBLE) {
-			// for (int i = 0; i < 5; i++) {
-			// note[i].setVisibility(View.INVISIBLE);
-			// rest[i].setVisibility(View.VISIBLE);
-			//
-			// TranslateAnimation t = new TranslateAnimation(i * 100, 0, 0, 0);
-			// // (0,0)から(100,100)に移動
-			// t.setDuration(100 + i * 50); // 3000msかけてアニメーションする
-			// rest[i].startAnimation(t); // アニメーション適用
-			// }
-			// }
+		if (noteCleck = true) {
+			for (int i = 0; i < note.length; i++) {
+
+				PropertyValuesHolder alpha1;
+				PropertyValuesHolder trans1;
+
+				alpha1 = PropertyValuesHolder.ofFloat("alpha", note[i].getAlpha(), 0f);
+				trans1 = PropertyValuesHolder.ofFloat("translationX", note[i].getTranslationX(), width);
+
+				ObjectAnimator anim1 = ObjectAnimator.ofPropertyValuesHolder(note[i], alpha1, trans1);
+				anim1.setDuration(300);
+
+				anim1.start();
+
+				width += note[i].getWidth();
+
+			}
+			noteCleck = false;
+			noteButton.setChecked(false);
+		} else {
+
 		}
 	}
 
